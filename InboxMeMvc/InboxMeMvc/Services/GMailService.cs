@@ -27,7 +27,7 @@ namespace InboxMeMvc.Services
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential(_config.GmailAccount, _config.GmailAccountPassword),
-                EnableSsl = true
+                EnableSsl = false
             };
             var subject = GetSubject(mail);
             client.Send(_config.GmailAccount, mail.EmailTarget, subject, mail.Text);
