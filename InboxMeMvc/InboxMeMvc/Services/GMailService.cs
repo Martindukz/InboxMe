@@ -24,11 +24,12 @@ namespace InboxMeMvc.Services
 
         public bool SendSimpleMail(SimpleTextMail mail)
         {
-            var client = new SmtpClient("smtp.gmail.com", 587)
-            {
-                Credentials = new NetworkCredential(_config.GmailAccount, _config.GmailAccountPassword),
-                EnableSsl = true
-            };
+            //var client = new SmtpClient("smtp.gmail.com", 587)
+            //{
+            //    Credentials = new NetworkCredential(_config.GmailAccount, _config.GmailAccountPassword),
+            //    EnableSsl = true
+            //};
+            var client = new SmtpClient();
             var subject = GetSubject(mail);
             client.Send(_config.GmailAccount, mail.EmailTarget, subject, mail.Text);
 
