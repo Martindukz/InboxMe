@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Configuration;
 using System.Web.Http;
 using InboxMeMvc.Models;
 using InboxMeMvc.Services;
@@ -24,11 +25,12 @@ namespace InboxMeMvc.Controllers
 
         public SimpleTextMail Get()
         {
+            var configValue = WebConfigurationManager.AppSettings["testofappharbour"];
             return new SimpleTextMail()
                 {
                     EmailTarget = "sometarget@somewhere.com",
                     Text = "Some text",
-                    Token = "Some token"
+                    Token = configValue
                 };
         }
 
