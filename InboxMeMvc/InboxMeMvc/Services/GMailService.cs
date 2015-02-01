@@ -11,7 +11,7 @@ namespace InboxMeMvc.Services
     public class GMailService : IMailService
     {
         private readonly IGMailServiceConfiguration _config;
-        private int _defaultSubjectLength;
+        private const int _defaultSubjectLength = 25;
 
         public GMailService() : this(null)
         {
@@ -40,7 +40,6 @@ namespace InboxMeMvc.Services
             if (string.IsNullOrWhiteSpace(mail.Text))
                 return "";
 
-            _defaultSubjectLength = 25;
             var subjectLength = Math.Min(_defaultSubjectLength, mail.Text.Length);
 
             return mail.Text.Substring(0, subjectLength);
