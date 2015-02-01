@@ -15,13 +15,14 @@ namespace InboxMeMvc.Controllers
     {
         private readonly IMailService _mailService;
 
-        public SimpleTextMailController() : this(null)
+        public SimpleTextMailController()
+            : this(null)
         {
         }
 
         public SimpleTextMailController(IMailService mailService)
         {
-            _mailService = mailService ?? new GMailService(); 
+            _mailService = mailService ?? new GMailService();
         }
 
         public SimpleTextMail Get()
@@ -38,25 +39,33 @@ namespace InboxMeMvc.Controllers
         public HttpResponseMessage Post(SimpleTextMail mail)
         {
             //Convert to some general mail format, e.g. text and attachments (pictures, video, audio)
-            
+
             var omnitoken = WebConfigurationManager.AppSettings["omnitoken"];
             if (mail.Token != omnitoken)
             {
-                throw new SecurityException("Invalid token");
-            }
-
-            try
-            {
-                _mailService.SendSimpleMail(mail);
-            }
-            catch (Exception ex)
-            {
+                //throw new SecurityException("Invalid token");
                 mail = new SimpleTextMail()
-                    {
-                        EmailTarget = "NotSent",
-                        Text = "Failed with exception: " + ex,
-                        Token = "Ex message: " + ex.Message
-                    };
+                {
+                    EmailTarget = "NotSent",
+                    Text = "Wrong token. Actual token startswith: " + omnitoken.Substring(0, 5),
+                    Token = mail.Token
+                };
+            }
+            else
+            {
+                try
+                {
+                    _mailService.SendSimpleMail(mail);
+                }
+                catch (Exception ex)
+                {
+                    mail = new SimpleTextMail()
+                        {
+                            EmailTarget = "NotSent",
+                            Text = "Failed with exception: " + ex,
+                            Token = "Ex message: " + ex.Message
+                        };
+                }
             }
             var response = Request.CreateResponse<SimpleTextMail>(System.Net.HttpStatusCode.Created, mail);
 
