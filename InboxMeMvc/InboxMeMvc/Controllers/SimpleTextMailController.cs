@@ -45,8 +45,19 @@ namespace InboxMeMvc.Controllers
                 throw new SecurityException("Invalid token");
             }
 
-            _mailService.SendSimpleMail(mail);
-
+            try
+            {
+                _mailService.SendSimpleMail(mail);
+            }
+            catch (Exception ex)
+            {
+                mail = new SimpleTextMail()
+                    {
+                        EmailTarget = "NotSent",
+                        Text = "Failed with exception: " + ex,
+                        Token = "Ex message: " + ex.Message
+                    };
+            }
             var response = Request.CreateResponse<SimpleTextMail>(System.Net.HttpStatusCode.Created, mail);
 
             return response;
