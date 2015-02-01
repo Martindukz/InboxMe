@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
 using System.Web.Configuration;
 using System.Web.Http;
 using InboxMeMvc.Models;
@@ -20,7 +21,7 @@ namespace InboxMeMvc.Controllers
 
         public SimpleTextMailController(IMailService mailService)
         {
-            _mailService = mailService ?? new MailService(); 
+            _mailService = mailService ?? new GMailService(); 
         }
 
         public SimpleTextMail Get()
@@ -37,6 +38,13 @@ namespace InboxMeMvc.Controllers
         public HttpResponseMessage Post(SimpleTextMail mail)
         {
             //Convert to some general mail format, e.g. text and attachments (pictures, video, audio)
+            
+            var omnitoken = WebConfigurationManager.AppSettings["omnitoken"];
+            if (mail.Token != omnitoken)
+            {
+                throw new SecurityException("Invalid token");
+            }
+
             _mailService.SendSimpleMail(mail);
 
             var response = Request.CreateResponse<SimpleTextMail>(System.Net.HttpStatusCode.Created, mail);
