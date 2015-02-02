@@ -1,35 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Mail;
-using System.Web;
 using InboxMeMvc.Configuration;
 using InboxMeMvc.Models;
 
 namespace InboxMeMvc.Services
 {
-    public class GMailService : IMailService
+    public class MailGunService : IMailService
     {
         private readonly IGMailServiceConfiguration _config;
         private const int _defaultSubjectLength = 25;
 
-        public GMailService() : this(null)
+        public MailGunService()
+            : this(null)
         {
         }
 
-        public GMailService(IGMailServiceConfiguration config)
+        public MailGunService(IGMailServiceConfiguration config)
         {
             _config = config ?? new GMailServiceConfiguration();
         }
 
         public bool SendSimpleMail(SimpleTextMail mail)
         {
-            var client = new SmtpClient("smtp.gmail.com", 587)
-            {
-                Credentials = new NetworkCredential(_config.GmailAccount, _config.GmailAccountPassword),
-                EnableSsl = true
-            };
+            var client = new SmtpClient();
             var subject = GetSubject(mail);
             client.Send(_config.GmailAccount, mail.EmailTarget, subject, mail.Text);
 

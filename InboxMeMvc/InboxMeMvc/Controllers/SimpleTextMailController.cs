@@ -22,6 +22,7 @@ namespace InboxMeMvc.Controllers
 
         public SimpleTextMailController(IMailService mailService)
         {
+            //_mailService = mailService ?? new MailGunService();
             _mailService = mailService ?? new GMailService();
         }
 

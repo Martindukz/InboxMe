@@ -192,6 +192,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Configuration\GMailServiceConfiguration.cs" />
+    <Compile Include="Configuration\IGMailServiceConfiguration.cs" />
+    <Compile Include="Configuration\IMailGunServiceConfiguration.cs" />
+    <Compile Include="Configuration\MailGunServiceConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SimpleTextMailController.cs" />
@@ -199,13 +203,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="IGMailServiceConfiguration.cs" />
-    <Compile Include="GMailServiceConfiguration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\SimpleTextMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IMailService.cs" />
     <Compile Include="Services\GMailService.cs" />
+    <Compile Include="Services\MailGunService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

@@ -1,4 +1,4 @@
-﻿namespace InboxMeMvc
+namespace InboxMeMvc.Configuration
 {
     public interface IGMailServiceConfiguration
     {
