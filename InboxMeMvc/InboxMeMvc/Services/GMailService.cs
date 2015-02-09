@@ -41,9 +41,11 @@ namespace InboxMeMvc.Services
             if (string.IsNullOrWhiteSpace(mail.Text))
                 return "";
 
-            var subjectLength = Math.Min(_defaultSubjectLength, mail.Text.Length);
+            return mail.Subject;
 
-            return mail.Text.Substring(0, subjectLength);
+            //var subjectLength = Math.Min(_defaultSubjectLength, mail.Text.Length);
+
+            //return mail.Text.Substring(0, subjectLength);
         }
     }
 }

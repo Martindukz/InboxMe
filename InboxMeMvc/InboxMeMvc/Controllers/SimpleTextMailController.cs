@@ -33,7 +33,8 @@ namespace InboxMeMvc.Controllers
                 {
                     EmailTarget = "sometarget@somewhere.com",
                     Text = "Some text",
-                    Token = configValue
+                    Subject = "Somesubject",
+                    Token = configValue,
                 };
         }
 

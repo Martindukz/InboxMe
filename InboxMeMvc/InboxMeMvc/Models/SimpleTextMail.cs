@@ -19,5 +19,7 @@ namespace InboxMeMvc.Models
         public string Token { get; set; }
         [DataMember]
         public string Text { get; set; }
+        [DataMember]
+        public string Subject { get; set; }
     }
 }
