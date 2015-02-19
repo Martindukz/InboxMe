@@ -43,15 +43,15 @@ namespace InboxMeMvc.Controllers
             //Convert to some general mail format, e.g. text and attachments (pictures, video, audio)
 
             var omnitoken = WebConfigurationManager.AppSettings["omnitoken"];
-            if (mail.Token != omnitoken)
+            if (mail == null)
+            {
+                //throw new NullReferenceException();
+                mail = CreateNullMailResponse(mail);
+            }
+            else if (mail.Token != omnitoken)
             {
                 //throw new SecurityException("Invalid token");
-                mail = new SimpleTextMail()
-                {
-                    EmailTarget = "NotSent",
-                    Text = "Wrong token. Actual token startswith: " + omnitoken.Substring(0, 5),
-                    Token = mail.Token
-                };
+                mail = CreateFaultyTokenResponse(mail, omnitoken);
             }
             else
             {
@@ -61,17 +61,46 @@ namespace InboxMeMvc.Controllers
                 }
                 catch (Exception ex)
                 {
-                    mail = new SimpleTextMail()
-                        {
-                            EmailTarget = "NotSent",
-                            Text = "Failed with exception: " + ex,
-                            Token = "Ex message: " + ex.Message
-                        };
+                    mail = CreateExceptionResponse(ex);
                 }
             }
             var response = Request.CreateResponse<SimpleTextMail>(System.Net.HttpStatusCode.Created, mail);
 
             return response;
+        }
+
+        private static SimpleTextMail CreateExceptionResponse(Exception ex)
+        {
+            SimpleTextMail mail;
+            mail = new SimpleTextMail()
+                {
+                    EmailTarget = "NotSent",
+                    Text = "Failed with exception: " + ex,
+                    Token = "Ex message: " + ex.Message
+                };
+            return mail;
+        }
+
+        private static SimpleTextMail CreateFaultyTokenResponse(SimpleTextMail mail, string omnitoken)
+        {
+            mail = new SimpleTextMail()
+                {
+                    EmailTarget = "NotSent",
+                    Text = "Wrong token. Actual token startswith: " + omnitoken.Substring(0, 5),
+                    Token = mail.Token
+                };
+            return mail;
+        }
+
+        private static SimpleTextMail CreateNullMailResponse(SimpleTextMail mail)
+        {
+            mail = new SimpleTextMail()
+                {
+                    EmailTarget = "NotSent",
+                    Text = "Mail was null - possible caused by bad format",
+                    Token = mail.Token
+                };
+            return mail;
         }
     }
 }
