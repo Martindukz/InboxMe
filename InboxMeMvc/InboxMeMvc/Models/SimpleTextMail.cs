@@ -21,5 +21,9 @@ namespace InboxMeMvc.Models
         public string Text { get; set; }
         [DataMember]
         public string Subject { get; set; }
+        [DataMember]
+        public string FileString { get; set; }
+        [DataMember]
+        public string FileName { get; set; }
     }
 }

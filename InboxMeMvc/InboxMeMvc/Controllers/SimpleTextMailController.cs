@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
 using InboxMeMvc.Models;
@@ -57,6 +58,7 @@ namespace InboxMeMvc.Controllers
             {
                 try
                 {
+                    var fileCollection = HttpContext.Current.Request.Files; 
                     _mailService.SendSimpleMail(mail);
                 }
                 catch (Exception ex)
